@@ -1,10 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AnalyzeController } from './analyze/analyze.controller';
+import { AnalyzeService } from './analyze/analyze.service';
+import { HttpModule } from '@nestjs/axios';
+import { ConfigModule } from '@nestjs/config';
+import { CustomConfigModule } from './config/config.module';
+import { StatusController } from './status/status.controller';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    CustomConfigModule.register(),
+    HttpModule,
+  ],
+  controllers: [AnalyzeController, StatusController],
+  providers: [AnalyzeService],
 })
 export class AppModule {}
